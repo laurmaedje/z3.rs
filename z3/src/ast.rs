@@ -1086,6 +1086,22 @@ impl<'ctx> Set<'ctx> {
         })
     }
 
+    /// Create the empty set.
+    pub fn empty(ctx: &'ctx Context, eltype: &Sort<'ctx>) -> Set<'ctx> {
+        Set::new(ctx, unsafe {
+            let guard = Z3_MUTEX.lock().unwrap();
+            Z3_mk_empty_set(ctx.z3_ctx, eltype.z3_sort)
+        })
+    }
+
+    /// Create the full set.
+    pub fn full(ctx: &'ctx Context, eltype: &Sort<'ctx>) -> Set<'ctx> {
+        Set::new(ctx, unsafe {
+            let guard = Z3_MUTEX.lock().unwrap();
+            Z3_mk_full_set(ctx.z3_ctx, eltype.z3_sort)
+        })
+    }
+
     /// Add an element to the set.
     ///
     /// Note that the `element` _must be_ of the `Set`'s `eltype` sort.
