@@ -7,6 +7,7 @@ use z3_sys::*;
 use Context;
 use Sort;
 use Symbol;
+use Params;
 use Z3_MUTEX;
 
 #[cfg(feature = "arbitrary-size-numeral")]
@@ -186,6 +187,13 @@ pub trait Ast<'ctx>: Sized {
     fn simplify(&self) -> Self {
         Self::new(self.get_ctx(), unsafe {
             Z3_simplify(self.get_ctx().z3_ctx, self.get_z3_ast())
+        })
+    }
+
+    /// Simplify the `Ast` with parameters.
+    fn simplify_ex(&self, params: &Params<'ctx>) -> Self {
+        Self::new(self.get_ctx(), unsafe {
+            Z3_simplify_ex(self.get_ctx().z3_ctx, self.get_z3_ast(), params.z3_params)
         })
     }
 
